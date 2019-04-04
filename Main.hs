@@ -7,6 +7,7 @@ type Board = [[Int]]
 data Gamestate = Gamestate Board StdGen
 data Direction = North | South | East | West
 
+-- Board builder
 mkBoard :: Int -> Board
 mkBoard n = replicate n $ replicate n 0
 
@@ -35,6 +36,7 @@ getBoard (Gamestate board _) = board
 getStdGen :: Gamestate -> StdGen
 getStdGen (Gamestate _ stdGen) = stdGen
 
+-- Coalesce adjacent squares of matching value and slide West
 reduce :: Board -> Board
 reduce = map rowReduce
     where rowReduce [] = []
@@ -45,11 +47,16 @@ reduce = map rowReduce
               | x == y = (x + y) : rowReduce zs ++ [0]
               | otherwise = x : rowReduce (y : zs)
 
+-- Coalesce directionally
 slide :: Direction -> Board -> Board
 slide North = transpose . reduce . transpose
 slide South = transpose . map reverse . reduce . map reverse . transpose
 slide East  = map reverse . reduce . map reverse
 slide West  = reduce
+
+-- Check if any moves on the board are legal
+isLocked :: Board -> Bool
+isLocked board = all (\board' -> board' == board) $ map (\dir -> slide dir board) [North, South, East, West]
 
 main :: IO ()
 main = putStrLn "Hello, Haskell!"
