@@ -26,7 +26,7 @@ formatLines :: [[Int]] -> [String]
 formatLines board = map (formatLine (length $ show $ maximum $ map maximum board)) board 
 
 instance Show Board where
-    show (Board board) = show $ intercalate "\n" (formatLines board)
+    show (Board board) = intercalate "\n" (formatLines board)
 
 getBoard :: Gamestate -> Board
 getBoard (Gamestate board _) = board
