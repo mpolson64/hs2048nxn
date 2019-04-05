@@ -113,4 +113,6 @@ play (Gamestate board stdGen) = do
           else play $ addTile $ Gamestate board' stdGen
 
 main :: IO ()
-main = putStrLn "Hello, Haskell!"
+main =
+  let start = addTile . addTile $ (Gamestate (mkBoard 4) (mkStdGen 0))
+   in play start
