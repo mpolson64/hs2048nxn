@@ -65,5 +65,13 @@ emptyTiles board =
         indexed = concatMap (\x -> map (\y -> (fst y, (snd x, snd y))) (fst x)) (map (\x -> (zip (fst x) indicies, snd x)) (zip board indicies))
      in map snd (filter (\x -> fst x == 0) indexed)
 
+-- Sets the value of the tile at a specific coordinate
+setTile :: (Int, Int) -> Int -> Board -> Board
+setTile (i, j) n board = setNth i (setNth j n (board !! i)) board
+    where setNth _ _ [] = []
+          setNth i n (x:xs)
+            | i == 0 = n:xs
+            | otherwise = x:setNth (i - 1) n xs          
+
 main :: IO ()
 main = putStrLn "Hello, Haskell!"
