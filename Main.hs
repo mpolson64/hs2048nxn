@@ -116,7 +116,7 @@ play (Gamestate board stdGen) = do
 main :: IO ()
 main = do
   args <- getArgs
-  let n = read $ args !! 0
-      seed = read $ args !! 1
+  let n = if (length args > 0) then read $ args !! 0 else 4
+      seed = if (length args > 1) then read $ args !! 1 else 0
       start = addTile . addTile $ (Gamestate (mkBoard n) (mkStdGen seed))
    in play start
