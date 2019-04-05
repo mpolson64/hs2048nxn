@@ -60,7 +60,7 @@ isLocked board = all (\board' -> board' == board) $ map (\dir -> slide dir board
 
 -- Returns indices of empty tiles on board
 emptyTiles :: Board -> [(Int, Int)]
-emptyTiles board = 
+emptyTiles board =
     let indicies = [0..(length board) - 1]
         indexed = concatMap (\x -> map (\y -> (fst y, (snd x, snd y))) (fst x)) (map (\x -> (zip (fst x) indicies, snd x)) (zip board indicies))
      in map snd (filter (\x -> fst x == 0) indexed)
@@ -71,7 +71,19 @@ setTile (i, j) n board = setNth i (setNth j n (board !! i)) board
     where setNth _ _ [] = []
           setNth i n (x:xs)
             | i == 0 = n:xs
-            | otherwise = x:setNth (i - 1) n xs          
+            | otherwise = x:setNth (i - 1) n xs
+
+-- Places either a 2 (80% chance) or 4 (20% chance) onto the board
+addTile :: Gamestate -> Gamestate
+addTile (Gamestate board stdGen) =
+    let (res, stdGen') = random stdGen :: (Int, StdGen)
+        (res', stdGen'') = random stdGen' :: (Int, StdGen)
+        zeroCoords = emptyTiles board
+        coord = zeroCoords !! mod res (length zeroCoords)
+        n = if mod res' 5 == 0 then 4 else 2
+        board' = setTile coord n board
+     in Gamestate board' stdGen''
+
 
 main :: IO ()
 main = putStrLn "Hello, Haskell!"
