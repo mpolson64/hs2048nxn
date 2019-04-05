@@ -1,6 +1,7 @@
 module Main where
 
 import Data.List
+import System.Environment
 import System.Random
 
 type Board = [[Int]]
@@ -113,6 +114,9 @@ play (Gamestate board stdGen) = do
           else play $ addTile $ Gamestate board' stdGen
 
 main :: IO ()
-main =
-  let start = addTile . addTile $ (Gamestate (mkBoard 4) (mkStdGen 0))
+main = do
+  args <- getArgs
+  let n = read $ args !! 0
+      seed = read $ args !! 1
+      start = addTile . addTile $ (Gamestate (mkBoard n) (mkStdGen seed))
    in play start

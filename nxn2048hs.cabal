@@ -17,7 +17,7 @@ category:            Game
 build-type:          Simple
 extra-source-files:  CHANGELOG.md, README.md
 
-executable hs2048nxn
+executable nxn2048hs
   main-is:             Main.hs
   -- other-modules:
   -- other-extensions:
