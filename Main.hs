@@ -58,5 +58,12 @@ slide West  = reduce
 isLocked :: Board -> Bool
 isLocked board = all (\board' -> board' == board) $ map (\dir -> slide dir board) [North, South, East, West]
 
+-- Returns indices of empty tiles on board
+emptyTiles :: Board -> [(Int, Int)]
+emptyTiles board = 
+    let indicies = [0..(length board) - 1]
+        indexed = concatMap (\x -> map (\y -> (fst y, (snd x, snd y))) (fst x)) (map (\x -> (zip (fst x) indicies, snd x)) (zip board indicies))
+     in map snd (filter (\x -> fst x == 0) indexed)
+
 main :: IO ()
 main = putStrLn "Hello, Haskell!"
