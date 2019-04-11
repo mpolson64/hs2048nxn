@@ -102,13 +102,14 @@ play (Gamestate board stdGen) = do
   if isLocked board
      then putStrLn "Game over"
      else do
-       input <- getChar
+       input <- getLine
        putStr "\n"
-       let board' = case getDirection input of Nothing -> board
-                                               Just North -> slide North board
-                                               Just South -> slide South board
-                                               Just East -> slide East board
-                                               Just West -> slide West board
+       let board' = case getDirection $ head (input ++ " ") of
+                      Nothing -> board
+                      Just North -> slide North board
+                      Just South -> slide South board
+                      Just East -> slide East board
+                      Just West -> slide West board
            loop = if board' == board
               then play (Gamestate board stdGen)
               else play $ addTile $ Gamestate board' stdGen
