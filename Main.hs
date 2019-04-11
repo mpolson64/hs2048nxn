@@ -109,9 +109,10 @@ play (Gamestate board stdGen) = do
                                                Just South -> slide South board
                                                Just East -> slide East board
                                                Just West -> slide West board
-       if board' == board
-          then play (Gamestate board stdGen)
-          else play $ addTile $ Gamestate board' stdGen
+           loop = if board' == board
+              then play (Gamestate board stdGen)
+              else play $ addTile $ Gamestate board' stdGen
+       loop
 
 main :: IO ()
 main = do
